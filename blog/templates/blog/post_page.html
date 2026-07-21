@@ -2,7 +2,7 @@
 {% load blog_tags %}
 
 {% block content %}
-    <h1>Home page</h1>
+    <h1>{{ post.title|capfirst }}</h1>
     <hr>
-    {% show_menu %}
+    <p>{{ post.text }}</p>
 {% endblock %}

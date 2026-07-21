@@ -1,5 +1,8 @@
 <ul>
     {% for menu_item in menu %}
-    <li><a href="{% url 'nav_bar_choice' menu_item.id %}">{{ menu_item.title }}</a></li>
-    {% endfor %}
+        <li><a href="{% url 'nav_bar_choice' menu_item.title|slugify %}">{{ menu_item.title|capfirst }}</a></li>
+        {% if not forloop.last %}
+                <hr>
+        {% endif %}
+        {% endfor %}
 </ul>
