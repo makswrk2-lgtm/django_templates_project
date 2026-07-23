@@ -1,12 +1,12 @@
 from django import template
-from blog.data import menu_db
+from django.shortcuts import get_object_or_404
+from blog.models import Post
 
 register = template.Library()
 
-menu_db = sorted(menu_db, key=lambda x: x['id'], reverse=True)
-
 @register.inclusion_tag('blog/includes/menu.html')
 def show_menu():
+    posts = Post.objects.filter(is_published=1).only('title', 'get_absolute_url')
     return {
-        'menu': menu_db
+        'menu': posts
     }

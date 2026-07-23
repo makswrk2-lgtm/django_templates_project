@@ -1,15 +1,20 @@
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template.defaultfilters import slugify
-from .data import menu_db
-
+from .models import Post
 
 def index(request):
     return render(request, 'blog/home_page.html')
 
+def choice(request, post_slug):
 
-def choice(request, slug):
-    for i in menu_db:
-        if slugify(i['title']) == slug:
-            return render(request, 'blog/post_page.html', {'post': i})
-    raise Http404("Post not found")
+    post = get_object_or_404(
+        Post,
+        slug = post_slug,
+        is_published = 1,
+    )
+
+    return render(request, 'blog/post_page.html', {
+        'title' : post.title,
+        'content': post.content,
+    })
