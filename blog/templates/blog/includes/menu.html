@@ -1,9 +1,11 @@
 <ul>
     {% for menu_item in menu %}
         <li>
-            <a href="{{ menu_item.get_absolute_url }}">
-                {{ menu_item.title|capfirst }}
-            </a>
+            {% if not cat_slug == menu_item.slug %}
+                <a href="{{ menu_item.get_cat_url }}">{{ menu_item.name|capfirst }}</a>
+            {% else %}
+                <p>{{ menu_item.name|capfirst }}</p>
+            {% endif %}
         </li>
 
         {% if not forloop.last %}

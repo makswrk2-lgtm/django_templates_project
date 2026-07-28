@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
@@ -13,9 +14,31 @@ class Post(models.Model):
     slug = models.SlugField(max_length=200, unique=True, blank=True)
     creat_date = models.DateTimeField(auto_now_add=True)
     is_published = models.BooleanField(default=True)
+    category = models.ForeignKey('Category', on_delete=models.PROTECT, related_name = 'posts')
 
-    def get_absolute_url(self):
-        return reversed('nav_bar_choice', kwargs={'post_slug': self.slug})
+    class Meta:
+        ordering = ['creat_date']
+
+
+    def __str__(self):
+        return self.title
+
+
+    def get_post_url(self):
+        return reverse('post', kwargs={'cat_slug': self.category.slug, 'post_slug': self.slug})
+
 
     objects = models.Manager()
     published = PublishedManager()
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100, db_index=True)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True)
+
+    def get_cat_url(self):
+        return reverse('cat', kwargs={'cat_slug': self.slug})
+
+
+    def __str__(self):
+        return self.name

@@ -1,0 +1,10 @@
+{% load blog_tags %}
+
+{% get_posts as posts %}
+
+{% for post in posts %}
+    <a href="{{ post.get_post_url }}">{{ post.title }}</a>
+    {% if not forloop.last %}
+        <span> | </span>
+    {% endif %}
+{% endfor %}

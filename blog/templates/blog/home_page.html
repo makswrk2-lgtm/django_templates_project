@@ -1,8 +1,29 @@
 {% extends 'base.html' %}
 {% load blog_tags %}
 
+{% block breadcrumbs %}
+    {% for i in breadcrumb %}
+        <span> > </span>
+        {% if forloop.last %}
+            <span>{{ i.title|capfirst }}</span>
+        {% else %}
+            <a href="{{ i.url }}">{{ i.title|capfirst }}</a>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+
 {% block content %}
     <h1>Home page</h1>
     <hr>
-    {% show_menu %}
+    {% show_cat_menu cat_slug %}
+    {% if not cat_slug %}
+        {% include 'blog/includes/all_posts.html' %}
+    {% else %}
+        {% if not post_slug %}
+            {% show_posts_list cat_slug %}
+        {% else %}
+            {% show_posts_list cat_slug post_slug %}
+            {% show_post_info post %}
+        {% endif %}
+    {% endif %}
 {% endblock %}
